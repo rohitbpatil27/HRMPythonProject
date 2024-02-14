@@ -3,24 +3,25 @@ from pathlib import Path
 
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-baseURL = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+driver = None
+baseURL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
 username = "Admin"
 password = "admin123"
 
-
+#git work
 @pytest.fixture(scope="class", autouse=True)
 def browser_setup(request):
-    chrome_option = Options()
-    chrome_option.add_experimental_option("detach", True)  # browser won't close automatically
-    request.cls.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    chr_options = Options()
+    chr_options.add_experimental_option("detach", True)
+    request.cls.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chr_options)
 
 
 @pytest.hookimpl(tryfirst=True)
-def pytest_configuration(config):
+def pytest_configure(config):
     today = datetime.now()
     report_dir = Path("hrmreports", today.strftime("%Y%m%d"))
     report_dir.mkdir(parents=True, exist_ok=True)
